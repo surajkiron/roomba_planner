@@ -36,5 +36,6 @@ int main() {
     std::cout << waypoint.transpose() << std::endl;
   }
   vis.viewGrid(path, obstacles);
+  vis.viewState(path);
   return 0;
 }

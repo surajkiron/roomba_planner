@@ -16,6 +16,31 @@ Visualize(OccupancyGrid &grid) :
   _y_limit(grid.height * grid.resolution_m)
 {}
 
+void viewState(Trajectory &path){
+  plt::figure_size(1200, 400);
+
+  int n = path.size();
+  std::vector<float> x(n), y(n), theta(n);
+  for (size_t i = 0; i < n; ++i) {
+    x.at(i) = path[i][0];
+    y.at(i) = path[i][1];
+    theta.at(i) = path[i][2];
+  }
+  plt::plot(x, {{"color", "red"}});
+  plt::named_plot("X vs StepCount", x);
+
+  plt::plot(y, {{"color", "green"}});
+  plt::named_plot("Y vs StepCount", y);
+
+  plt::plot(theta, {{"color", "blue"}});
+  plt::named_plot("Theta vs StepCount", theta);
+  plt::legend();
+
+
+  plt::tight_layout();
+  plt::show();
+}
+
 void viewGrid(Trajectory &path, std::vector<std::pair<float, float>> obstacles
 ){
   plt::figure_size(1200, 1200);

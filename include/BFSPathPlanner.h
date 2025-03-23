@@ -34,16 +34,13 @@ public:
     std::queue<std::pair<int, int>> queue;
     std::vector<bool> visited = std::vector<bool>(320*320,false);
     std::vector<std::pair<int, int>> parent(grid.width * grid.height, {startX, startY}); // ???
-
+    std::vector<float> heading = std::vector<float>(320*320,0.0f);
     // Start BFS
     queue.push({startX, startY});
     visited[grid.get1DIndex(startX, startY)]=true;
-
     // Define 8-connected neighborhood
     int dx[] = {-1, -1, -1, 0, 0, 1, 1, 1};
     int dy[] = {-1, 0, 1, -1, 1, -1, 0, 1};
-    float dtheta[] = {-3*pi/4, pi, 3*pi/4, -pi/2, pi/2, -pi/4, 0.0, pi/4};
-
     bool found = false;
     while (!queue.empty()) {
       auto current = queue.front();
@@ -65,6 +62,7 @@ public:
             queue.push({nextX, nextY});
             visited[nextIndex]=true;
             parent[nextIndex] = {currentX, currentY};
+            heading[nextIndex] = atan2((nextY-currentY),(nextX-currentX));
           }
         }
       }
@@ -89,7 +87,8 @@ public:
       for (const auto& point : tempPath) {
         float x = (point.first + 0.5f) * grid.resolution_m;
         float y = (point.second + 0.5f) * grid.resolution_m;
-        path.push_back(Eigen::Vector3f(x, y, 0.0f)); // Assuming theta is 0 for simplicity
+        float theta = heading[grid.get1DIndex(point.first, point.second)];
+        path.push_back(Eigen::Vector3f(x, y, theta)); // Assuming theta is 0 for simplicity
       }
     }
     return path;
