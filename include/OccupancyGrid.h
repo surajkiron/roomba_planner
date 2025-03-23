@@ -38,5 +38,42 @@ struct OccupancyGrid {
         data[obsIndex] = true;
   }
 
+  /**
+   * @brief Given a coordinate, we set the coordinate as an obstacle
+   * @param xCoordinate is the x coordinate in m
+   * @param yCoordinate is the y coordinate in m
+   * @param obstacle_height is the size in y direction
+   * @param obstacle_width is the size in x direction
+   */
+  void setAsObstacleWithDimension(float xCoordinate, float yCoordinate, float obstacle_width, float obstacle_height) {
+    int xIndex = int(std::floor(xCoordinate)/resolution_m);
+    int yIndex = int(std::floor(yCoordinate)/resolution_m);
+    int cell_width = int(std::floor(obstacle_width)/resolution_m);
+    int cell_height = int(std::floor(obstacle_height)/resolution_m);
+
+    std::vector<float> corners_x = {
+      xIndex - cell_width / 2, // Bottom-left corner
+      xIndex + cell_width / 2, // Bottom-right corner
+      xIndex + cell_width / 2, // Top-right corner
+      xIndex - cell_width / 2  // Top-left corner
+    };
+    std::vector<float> corners_y = {
+      yIndex - cell_height / 2, // Bottom-left corner
+      yIndex - cell_height / 2, // Bottom-right corner
+      yIndex + cell_height / 2, // Top-right corner
+      yIndex + cell_height / 2  // Top-left corner
+    };
+
+    for (int i = corners_x[0];i<=corners_x[1];i++){
+      for (int j = corners_y[0];j<=corners_y[3];j++)
+      {
+        int obsIndex = get1DIndex(i, j);
+        if (obsIndex>=0 && obsIndex < width * height)
+            data[obsIndex] = true;
+      }
+    }
+
+  }
+
   
 };

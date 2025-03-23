@@ -41,27 +41,26 @@ void viewState(Trajectory &path){
   plt::show();
 }
 
-void viewGrid(Trajectory &path, std::vector<std::pair<float, float>> obstacles
+void viewGrid(Trajectory &path, std::vector<Eigen::Vector4f> obstacles
 ){
   plt::figure_size(1200, 1200);
   // Plot obstacles
   for (auto& obstacle: obstacles){
     std::vector<float> corners_x = {
-      obstacle.first - _grid_size / 2, // Bottom-left corner
-      obstacle.first + _grid_size / 2, // Bottom-right corner
-      obstacle.first + _grid_size / 2, // Top-right corner
-      obstacle.first - _grid_size / 2  // Top-left corner
+      obstacle[0] - obstacle[2] / 2, // Bottom-left corner
+      obstacle[0] + obstacle[2] / 2, // Bottom-right corner
+      obstacle[0] + obstacle[2] / 2, // Top-right corner
+      obstacle[0] - obstacle[2] / 2  // Top-left corner
     };
     std::vector<float> corners_y = {
-      obstacle.second - _grid_size / 2, // Bottom-left corner
-      obstacle.second - _grid_size / 2, // Bottom-right corner
-      obstacle.second + _grid_size / 2, // Top-right corner
-      obstacle.second + _grid_size / 2  // Top-left corner
+      obstacle[1] - obstacle[3] / 2, // Bottom-left corner
+      obstacle[1] - obstacle[3] / 2, // Bottom-right corner
+      obstacle[1] + obstacle[3] / 2, // Top-right corner
+      obstacle[1] + obstacle[3] / 2  // Top-left corner
     };
     plt::fill(corners_x, corners_y, {{"color", "black"}});
     plt::named_plot("Obstacle", corners_x, corners_y);
   }
-
   int n = path.size();
   std::vector<float> x(n), y(n), theta(n), w(n,2);
   for (size_t i = 0; i < n; ++i) {
@@ -69,6 +68,21 @@ void viewGrid(Trajectory &path, std::vector<std::pair<float, float>> obstacles
       x.at(i) = path[i][0];
       y.at(i) = path[i][1];
       theta.at(i) = path[i][2];
+  }
+  // Mark the start of the path with a circle
+  if (!x.empty() && !y.empty()) {
+      std::vector<float> start_x = {x[0]}; // Wrap start x-coordinate in a vector
+      std::vector<float> start_y = {y[0]}; // Wrap start y-coordinate in a vector
+      plt::scatter(start_x, start_y, 250.0, {{"marker", "o"}, {"color", "green"}}); // Circle marker at start
+      plt::named_plot("Start", start_x, start_y);
+  }
+
+  // Mark the end of the path with a star
+  if (!x.empty() && !y.empty()) {
+      std::vector<float> end_x = {x.back()}; // Wrap end x-coordinate in a vector
+      std::vector<float> end_y = {y.back()}; // Wrap end y-coordinate in a vector
+      plt::scatter(end_x, end_y, 400.0, {{"marker", "*"}, {"color", "red"}}); // Star marker at end
+      plt::named_plot("End", end_x, end_y);
   }
   plt::plot(x, y, {{"color", "blue"}}); 
   plt::named_plot("Path", x, y);

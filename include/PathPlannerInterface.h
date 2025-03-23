@@ -16,5 +16,8 @@ public:
                                           const Eigen::Vector3f &end) = 0;
 
 };
-
+enum class Planner {
+  BFS,
+  Dijkstra
+};
 

@@ -1,8 +1,9 @@
 #include <iostream>
 #include <memory>
+#include "BFSPathPlanner.h"
+#include "DijkstraPathPlanner.h"
 #include "OccupancyGrid.h"
 #include "PathPlannerInterface.h"
-#include "BFSPathPlanner.h"
 #include "Visualization.h"
 
 
@@ -11,19 +12,31 @@ int main() {
 
   OccupancyGrid grid{};
   Visualize vis(grid);
+  Planner type = Planner::BFS;
 
-  std::unique_ptr<PathPlannerInterface> planner = std::make_unique<BFSPathPlanner>();
-  std::vector<std::pair<float, float>> obstacles;
+  std::unique_ptr<PathPlannerInterface> planner;
+  switch (type) {
+    case Planner::BFS:
+      planner = std::make_unique<BFSPathPlanner>();
+      break;
+    case Planner::Dijkstra:
+      planner = std::make_unique<DijkstraPathPlanner>();
+      break;
+    default:
+      std::cerr << "Unknown planner type" << std::endl;
+      return -1;
+  }
+  std::vector<Eigen::Vector4f> obstacles;
   obstacles = {
-    {10.0, 10.0},
-    {11.0, 11.0},
+    {1.0, 10.0, 2.0, 1.0},
+    {11.0, 11.0, 5.0, 5.0},
   };
   for (auto& obstacle : obstacles){
-    grid.setAsObstacle(obstacle.first, obstacle.second);
+    grid.setAsObstacleWithDimension(obstacle[0], obstacle[1], obstacle[2], obstacle[3]);
   }
 
   auto start = Eigen::Vector3f{0.50, 0.50, 0.0};
-  auto end = Eigen::Vector3f{15.0, 15.0, 0.0};
+  auto end = Eigen::Vector3f{1.0, 15.0, 0.0};
   Trajectory path = planner->getCollisionFreePath(grid, start, end);
   // print function for vector
   int n = path.size();
