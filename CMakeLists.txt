@@ -7,6 +7,8 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
 # Find Eigen3
 find_package(Eigen3 REQUIRED)
+find_package(yaml-cpp REQUIRED)
+
 
 # Find Python and its development libraries
 find_package(PythonLibs REQUIRED)
@@ -33,3 +35,5 @@ target_link_libraries(CheckPath PRIVATE Eigen3::Eigen ${PYTHON_LIBRARIES})
 
 # Add matplotlibcpp.h to the target
 target_include_directories(CheckPath PRIVATE include ${PYTHON_INCLUDE_DIRS} ${NUMPY_INCLUDE_DIR})
+
+target_link_libraries(CheckPath PRIVATE yaml-cpp)

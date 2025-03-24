@@ -5,8 +5,8 @@
 A circular roomba robot is present in an already mapped environment. The map is in the format of a binary occupancy
 grid.
 <p align="center"><img src="assets/grid-example.png" width="50%"></p>
-Each cell in the grid contains a boolean value indicating if an obstacle is present at
-a given location, i.e `true -> obstacle` and `false -> free`. The `OccupancyGrid` struct contains a 1d array of boolean
+
+Each cell in the grid contains a boolean value indicating if an obstacle is present at a given location, i.e `true -> obstacle` and `false -> free`. The `OccupancyGrid` struct contains a 1d array of boolean
 that denotes a 2d grid in a row major format. The intent is to find a safe **collision-free** path from a given location
 to the vicinity of the goal location.
 
@@ -42,6 +42,11 @@ To install Eigen, run the following command:
 
     sudo apt install libeigen3-dev
 
+### Yaml-cpp
+Yaml-cpp library is used to parse config.yml.
+```
+sudo apt install libyaml-cpp-dev
+```
 ## Build
 
 To build , run
@@ -52,5 +57,3 @@ Feel free to edit the [main.cpp](src/main.cpp) to run the Path planner with any 
 grid.
 
 ## Assumptions
-
-`theta` is a discrete multiple of $\frac{\pi}{4} \, rad$

@@ -38,7 +38,10 @@ public:
         auto cmp = [](const std::pair<float, std::pair<int, int>>& a, const std::pair<float, std::pair<int, int>>& b) {
             return a.first > b.first; // Min-heap based on cost
         };
-        std::priority_queue<std::pair<float, std::pair<int, int>>, std::vector<std::pair<float, std::pair<int, int>>>, decltype(cmp)> pq(cmp);
+
+        std::priority_queue<std::pair<float, std::pair<int, int>>,
+                            std::vector<std::pair<float, std::pair<int, int>>>,
+                            decltype(cmp)> pq(cmp);
 
         // Visited set and cost tracking
         std::vector<bool> visited(grid.width * grid.height, false);
@@ -77,7 +80,7 @@ public:
                 if (nextX >= 0 && nextX < grid.width && nextY >= 0 && nextY < grid.height) {
                     int nextIndex = grid.get1DIndex(nextX, nextY);
                     if (!grid.data[nextIndex]) {
-                        float newCost = currentCost + std::hypot(dx[i], dy[i]); // Euclidean distance as cost
+                        float newCost = currentCost + sqrt(dx[i] * dx[i] + dy[i] * dy[i]); // Euclidean distance as cost
                         if (newCost < cost[nextIndex]) {
                             cost[nextIndex] = newCost;
                             pq.push({ newCost, { nextX, nextY } });
@@ -113,6 +116,11 @@ public:
                 float theta = heading[grid.get1DIndex(point.first, point.second)];
                 path.push_back(Eigen::Vector3f(x, y, theta));
             }
+            path.push_back(end);
+            std::cout<<"Found Path of size: "<<path.size()<<std::endl;
+        }
+        else{
+            std::cout<<"No valid path found"<<std::endl;
         }
 
         return path;

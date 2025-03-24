@@ -1,6 +1,6 @@
 #pragma once
-#include "PathPlannerInterface.h"
 #include "iostream"
+#include "PathPlannerInterface.h"
 
 class BFSPathPlanner : public PathPlannerInterface {
 public:
@@ -32,9 +32,9 @@ public:
 
     // BFS queue and visited set
     std::queue<std::pair<int, int>> queue;
-    std::vector<bool> visited = std::vector<bool>(320*320,false);
+    std::vector<bool> visited = std::vector<bool>(grid.width*grid.height,false);
     std::vector<std::pair<int, int>> parent(grid.width * grid.height, {startX, startY}); // ???
-    std::vector<float> heading = std::vector<float>(320*320,0.0f);
+    std::vector<float> heading = std::vector<float>(grid.width*grid.height,0.0f);
     // Start BFS
     queue.push({startX, startY});
     visited[grid.get1DIndex(startX, startY)]=true;
@@ -88,8 +88,10 @@ public:
         float x = (point.first + 0.5f) * grid.resolution_m;
         float y = (point.second + 0.5f) * grid.resolution_m;
         float theta = heading[grid.get1DIndex(point.first, point.second)];
-        path.push_back(Eigen::Vector3f(x, y, theta)); // Assuming theta is 0 for simplicity
+        path.push_back(Eigen::Vector3f(x, y, theta)); 
       }
+      path.push_back(end);
+      std::cout<<"Found Path of size: "<<path.size()<<std::endl;
     }
     return path;
   }
