@@ -18,6 +18,7 @@ public:
 };
 enum class Planner {
   BFS,
-  Dijkstra
+  Dijkstra,
+  AStar,
 };
 

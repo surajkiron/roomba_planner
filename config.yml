@@ -13,6 +13,6 @@ OccupancyGrid:
     - [12.0, 6.0, 1.5, 1.0]
     - [14.0, 14.0, 1.5, 1.0]
 
-PlannerType: BFS # BFS | Dijkstra 
+PlannerType: AStar # BFS | Dijkstra | AStar
 Start: [1.0, 7.0, 0.0]
 End: [11.0, 14.0, 0.0]

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include "AStarPathPlanner.h"
 #include "BFSPathPlanner.h"
 #include "ConfigParser.h"
 #include "DijkstraPathPlanner.h"
@@ -22,6 +23,9 @@ int main() {
       break;
     case Planner::Dijkstra:
       planner = std::make_unique<DijkstraPathPlanner>();
+      break;
+    case Planner::AStar:
+      planner = std::make_unique<AStarPathPlanner>();
       break;
     default:
       std::cerr << "Unknown planner type" << std::endl;

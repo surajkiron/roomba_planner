@@ -1,11 +1,10 @@
-#ifndef CONFIG_PARSER_H
-#define CONFIG_PARSER_H
-
-#include <string>
-#include <yaml-cpp/yaml.h>
+#pragma once
+#include "AStarPathPlanner.h"
 #include "BFSPathPlanner.h"
 #include "DijkstraPathPlanner.h"
 #include "PathPlannerInterface.h"
+#include <string>
+#include <yaml-cpp/yaml.h>
 
 struct OccupancyGridConfig {
   int width;
@@ -35,6 +34,8 @@ public:
         planner = Planner::BFS;
     } else if (plannerType == "Dijkstra") {
         planner = Planner::Dijkstra;
+    } else if (plannerType == "AStar") {
+        planner = Planner::AStar;
     } else {
         std::cerr << "Unknown planner type" << std::endl;
         return;
@@ -49,5 +50,3 @@ public:
   Eigen::Vector3f start;
   Eigen::Vector3f end;
 };
-
-#endif // CONFIG_PARSER_H

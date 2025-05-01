@@ -1,4 +1,4 @@
-# Planning and Controls Assessment
+# Path Planner for Differntial Drive Robots
 
 ## Problem Statement
 
@@ -10,11 +10,7 @@ Each cell in the grid contains a boolean value indicating if an obstacle is pres
 that denotes a 2d grid in a row major format. The intent is to find a safe **collision-free** path from a given location
 to the vicinity of the goal location.
 
-Create a class that inherits the `PathPlannerInterface` class, and implement the `getCollisionFreePath()` pure virtual
-function to provide a trajectory which can be followed by the robot. Note that the start position and goal position may
-be any point within the occupancy grid. Take any assumptions based on the code provided already in the repository, but
-state the assumptions clearly in the Assumptions section below. We will analyze the design of the system as well as the
-algorithm. Try to stick to Eigen and STL libs for implementation.
+The PathPlanner classes inherits the `PathPlannerInterface` class, and implements the `getCollisionFreePath()` pure virtual function to provide a trajectory which can be followed by the robot. Note that the start position and goal position may be any point within the occupancy grid.
 
 ## System Description
 
@@ -22,8 +18,7 @@ algorithm. Try to stick to Eigen and STL libs for implementation.
 
 The origin of the occupancy grid is the bottom left of the image. The positive x-axis is to the right and positive
 y-axis is upwards. The grid is of size `320 x 320` with a resolution of `0.05 m`. The `OccupancyGrid` class has methods
-to set occupancy for a given coordinate, which could be useful for testing solutions. Feel free to edit this part of the
-code as well as use any kind of visualization assist (Not needed for this assessment).
+to set occupancy for a given coordinate, which could be useful for testing solutions.
 
 ### Robot
 
@@ -39,9 +34,9 @@ Eigen is a linear algebra library. Documentation to use Eigen is present
 structures and functions can be found [here](https://gist.github.com/gocarlos/c91237b02c120c6319612e42fa196d77)
 
 To install Eigen, run the following command:
-
-    sudo apt install libeigen3-dev
-
+```
+sudo apt install libeigen3-dev
+```
 ### Yaml-cpp
 Yaml-cpp library is used to parse config.yml.
 ```
@@ -53,7 +48,3 @@ To build , run
 
     cmake -B build && cmake --build build && ./bin/CheckPath
 
-Feel free to edit the [main.cpp](src/main.cpp) to run the Path planner with any start and stop locations in any random
-grid.
-
-## Assumptions
